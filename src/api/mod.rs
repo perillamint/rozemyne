@@ -16,35 +16,3 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
-use clap::Parser;
-
-//mod middleware;
-
-#[derive(clap::Parser)]
-#[clap(about, version, author)]
-struct Args {
-    #[clap(long, short = 'c', value_name = "CONFIG")]
-    config: Option<String>,
-}
-
-#[macro_use]
-extern crate lazy_static;
-
-lazy_static! {
-    static ref ARGS: Args = Args::parse();
-}
-
-#[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("Hello world!")
-}
-
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| App::new().service(hello))
-        .bind(("127.0.0.1", 8080))?
-        .run()
-        .await
-}
