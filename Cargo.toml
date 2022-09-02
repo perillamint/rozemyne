@@ -7,7 +7,7 @@ license = "AGPL-3.0-or-later"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-diesel = { version = "2.0.0-rc.0", features = ["postgres"] }
+sea-orm = { version = "0.9", features = ["sqlx-postgres", "runtime-actix-rustls", "macros"] }
 tokio = "1.19.0"
 actix-web = "4.0.1"
 lazy_static = "1.4.0"
@@ -19,7 +19,7 @@ regex = "1.5.6"
 prometheus = { version = "0.13.1", features = ["process"] }
 custom_error = "1.9.2"
 argon2 = "0.4.0"
-oauth2 = "4.2.0"
+openidconnect = { version = "2.3", features = ["reqwest"] }
 
 # Migrator
 migration = { path = "./migration" }
