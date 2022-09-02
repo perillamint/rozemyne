@@ -19,14 +19,19 @@
 
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 use clap::Parser;
+use migration::{Migrator, MigratorTrait};
+use sea_orm::{ConnectOptions, Database};
 
+mod config;
 //mod middleware;
+
+use config::read_config;
 
 #[derive(clap::Parser)]
 #[clap(about, version, author)]
 struct Args {
     #[clap(long, short = 'c', value_name = "CONFIG")]
-    config: Option<String>,
+    config: String,
 }
 
 #[macro_use]
@@ -43,6 +48,20 @@ async fn hello() -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    let cfg = read_config(&ARGS.config);
+
+    // Connect to the database
+    let mut connopt = ConnectOptions::new(cfg.database.url);
+
+    connopt
+        .max_connections(cfg.database.max_connections)
+        .min_connections(cfg.database.min_connections);
+
+    let conn = Database::connect(connopt).await.unwrap();
+
+    // Migrate the database
+    Migrator::up(&conn, None).await.unwrap();
+
     HttpServer::new(|| App::new().service(hello))
         .bind(("127.0.0.1", 8080))?
         .run()
