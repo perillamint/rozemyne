@@ -63,7 +63,7 @@ async fn main() -> std::io::Result<()> {
     Migrator::up(&conn, None).await.unwrap();
 
     HttpServer::new(|| App::new().service(hello))
-        .bind(("127.0.0.1", 8080))?
+        .bind((cfg.http.bind, cfg.http.port))?
         .run()
         .await
 }
