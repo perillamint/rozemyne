@@ -7,6 +7,8 @@ SPDX-License-Identifier: CC0-1.0
 # Project Rozemyne
 The better digital asset library & archive software.
 
+Named after the main protagonist from the light novel, [Ascendance of a Bookworm](https://en.wikipedia.org/wiki/Ascendance_of_a_Bookworm).
+
 !!! Currently in an early stage of development. Not functional yet !!!
 
 ## Why not Calibre?
