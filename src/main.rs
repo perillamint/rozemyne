@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use axum::{routing::get, Router};
 use clap::Parser;
 use migration::{Migrator, MigratorTrait};
 use sea_orm::{ConnectOptions, Database};
@@ -41,12 +41,7 @@ lazy_static! {
     static ref ARGS: Args = Args::parse();
 }
 
-#[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("Hello world!")
-}
-
-#[actix_web::main]
+#[tokio::main(flavor = "multi_thread")]
 async fn main() -> std::io::Result<()> {
     let cfg = read_config(&ARGS.config);
 
@@ -62,8 +57,13 @@ async fn main() -> std::io::Result<()> {
     // Migrate the database
     Migrator::up(&conn, None).await.unwrap();
 
-    HttpServer::new(|| App::new().service(hello))
-        .bind((cfg.http.bind, cfg.http.port))?
-        .run()
+    let app = Router::new().route("/", get(|| async { "Hello, World!" }));
+
+    // run it with hyper on localhost:3000
+    axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
+        .serve(app.into_make_service())
         .await
+        .unwrap();
+
+    Ok(())
 }
