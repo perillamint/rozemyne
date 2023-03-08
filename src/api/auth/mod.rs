@@ -17,11 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use axum::Router;
-
-mod auth;
-mod v1;
+use axum::{routing::get, Router};
 
 pub fn get_route() -> Router {
-    Router::new().nest("/v1", v1::get_route())
+    Router::new().route("/", get(|| async { "Hello, World!" }))
 }

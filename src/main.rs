@@ -21,11 +21,18 @@ use axum::{routing::get, Router};
 use clap::Parser;
 use migration::{Migrator, MigratorTrait};
 use sea_orm::{ConnectOptions, Database};
+use tower_http::{classify::ServerErrorsFailureClass, trace::TraceLayer};
 
+use jwt_authorizer::JwtAuthorizer;
+
+mod api;
 mod config;
+mod types;
+mod util;
 //mod middleware;
 
 use config::read_config;
+use serde::Deserialize;
 
 #[derive(clap::Parser)]
 #[clap(about, version, author)]
@@ -44,6 +51,7 @@ lazy_static! {
 #[tokio::main(flavor = "multi_thread")]
 async fn main() -> std::io::Result<()> {
     let cfg = read_config(&ARGS.config);
+    tracing_subscriber::fmt::init();
 
     // Connect to the database
     let mut connopt = ConnectOptions::new(cfg.database.url);
@@ -57,8 +65,12 @@ async fn main() -> std::io::Result<()> {
     // Migrate the database
     Migrator::up(&conn, None).await.unwrap();
 
-    let app = Router::new().route("/", get(|| async { "Hello, World!" }));
+    let app = Router::new()
+        .route("/", get(|| async { "Hello, World!" }))
+        .nest("/api", api::get_route())
+        .layer(TraceLayer::new_for_http());
 
+    tracing::info!("Listening on localhost:3000...");
     // run it with hyper on localhost:3000
     axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
         .serve(app.into_make_service())

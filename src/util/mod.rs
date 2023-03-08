@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2022 perillamint
+ * SPDX-FileCopyrightText: 2023 perillamint
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
@@ -17,11 +17,4 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use axum::Router;
-
-mod auth;
-mod v1;
-
-pub fn get_route() -> Router {
-    Router::new().nest("/v1", v1::get_route())
-}
+mod jwt;
