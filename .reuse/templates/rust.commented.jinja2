@@ -8,7 +8,7 @@
 {% for expression in spdx_expressions %}
  * SPDX-License-Identifier: {{ expression }}
 {% endfor %}
-{% if "GPL-3.0-or-later" or "AGPL-3.0-or-later" in spdx_expressions %}
+{% if ("GPL-3.0-or-later" or "AGPL-3.0-or-later") in spdx_expressions %}
  *
  * This program is free software: you can redistribute it and/or modify
 {% if "AGPL-3.0-or-later" in spdx_expressions %}
