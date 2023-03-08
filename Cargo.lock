@@ -303,6 +303,16 @@ dependencies = [
 [[package]]
 name = "axum-jwt"
 version = "0.1.0"
+dependencies = [
+ "axum",
+ "futures-core",
+ "futures-util",
+ "jsonwebtoken",
+ "serde",
+ "serde_json",
+ "tracing",
+ "tracing-subscriber",
+]
 
 [[package]]
 name = "bae"
