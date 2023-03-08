@@ -19,7 +19,7 @@
 
 use sea_orm::DatabaseConnection;
 
-mod auth_token;
+pub mod auth_token;
 
 #[derive(Clone)]
 pub(crate) struct AppState {

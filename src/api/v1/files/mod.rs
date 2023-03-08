@@ -17,9 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use serde::Deserialize;
+use axum::body::Body;
+use axum::routing::get;
+use axum::Router;
 
-#[derive(Debug, Deserialize, Clone)]
-pub(crate) struct JWTTokenClaim {
-    //
+use crate::config::Config;
+use crate::types::AppState;
+
+pub(crate) async fn get_route(config: &Config) -> Router<AppState, Body> {
+    Router::new().route("/", get(|| async { "Hello, World!" }))
 }

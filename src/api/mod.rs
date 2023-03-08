@@ -20,13 +20,14 @@
 use axum::body::Body;
 use axum::Router;
 
+use crate::config::Config;
 use crate::types::AppState;
 
 mod auth;
 mod v1;
 
-pub(crate) fn get_route() -> Router<AppState, Body> {
+pub(crate) async fn get_route(config: &Config) -> Router<AppState, Body> {
     Router::new()
-        .nest("/v1", v1::get_route())
-        .nest("/auth", auth::get_route())
+        .nest("/v1", v1::get_route(config).await)
+        .nest("/auth", auth::get_route(config).await)
 }

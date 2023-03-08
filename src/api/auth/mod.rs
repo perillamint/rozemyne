@@ -22,8 +22,9 @@ use axum::extract::State;
 use axum::routing::get;
 use axum::Router;
 
+use crate::config::Config;
 use crate::types::AppState;
 
-pub(crate) fn get_route() -> Router<AppState, Body> {
+pub(crate) async fn get_route(config: &Config) -> Router<AppState, Body> {
     Router::new().route("/", get(|| async { "Hello, World!" }))
 }

@@ -17,10 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use axum::{extract::State, routing::get, Router};
+use axum::routing::get;
+use axum::Router;
 use clap::Parser;
 use migration::{Migrator, MigratorTrait};
-use sea_orm::{ConnectOptions, Database, DatabaseConnection};
+use sea_orm::{ConnectOptions, Database};
 use tower_http::{classify::ServerErrorsFailureClass, trace::TraceLayer};
 
 use jwt_authorizer::JwtAuthorizer;
@@ -32,9 +33,8 @@ mod util;
 //mod middleware;
 
 use config::read_config;
+use types::auth_token::JWTTokenClaim;
 use types::AppState;
-
-use serde::Deserialize;
 
 #[derive(clap::Parser)]
 #[clap(about, version, author)]
@@ -56,7 +56,7 @@ async fn main() -> std::io::Result<()> {
     tracing_subscriber::fmt::init();
 
     // Connect to the database
-    let mut connopt = ConnectOptions::new(cfg.database.url);
+    let mut connopt = ConnectOptions::new(cfg.database.url.clone());
 
     connopt
         .max_connections(cfg.database.max_connections)
@@ -73,7 +73,7 @@ async fn main() -> std::io::Result<()> {
 
     let app = Router::new()
         .route("/", get(|| async { "Hello, World!" }))
-        .nest("/api", api::get_route())
+        .nest("/api", api::get_route(&cfg).await)
         .with_state(state)
         .layer(TraceLayer::new_for_http());
 

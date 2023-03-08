@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2022 perillamint
+ * SPDX-FileCopyrightText: 2023 perillamint
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
@@ -18,12 +18,25 @@
  */
 
 use axum::body::Body;
-use axum::extract::State;
-use axum::routing::get;
 use axum::Router;
+use jwt_authorizer::JwtAuthorizer;
 
+use crate::config::Config;
+use crate::types::auth_token::JWTTokenClaim;
 use crate::types::AppState;
 
-pub(crate) fn get_route() -> Router<AppState, Body> {
-    Router::new().route("/", get(|| async { "Hello, World!" }))
+mod files;
+mod user;
+
+pub(crate) async fn get_route(config: &Config) -> Router<AppState, Body> {
+    let jwt_auth: JwtAuthorizer<JWTTokenClaim> = JwtAuthorizer::from_secret("topsecret");
+    Router::new()
+        .nest("/user", user::get_route(config).await)
+        .nest("/files", files::get_route(config).await)
+        .layer(
+            jwt_auth
+                .layer()
+                .await
+                .expect("Failed to initialize JWT auth"),
+        )
 }
