@@ -1,33 +1,8 @@
-# SPDX-FileCopyrightText: 2022 perillamint
+# SPDX-FileCopyrightText: 2023 perillamint
 #
 # SPDX-License-Identifier: CC0-1.0
 
-[package]
-name = "rozemyne"
-version = "0.1.0"
-edition = "2021"
-license = "AGPL-3.0-or-later"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
-sea-orm = { version = "0.9", features = ["sqlx-postgres", "runtime-tokio-rustls", "macros"] }
-tokio = { version = "1.19.0", features = ["macros", "rt", "rt-multi-thread"] }
-axum = "0.6.10"
-tower-http = { version = "0.4", features = ["trace"] }
-tracing = "0.1"
-tracing-subscriber = { version="0.3", features = ["env-filter"] }
-lazy_static = "1.4.0"
-clap = { version = "3.1.18", features = ["derive"] }
-toml = "0.5.9"
-serde = "1.0.137"
-log = "0.4.17"
-regex = "1.5.6"
-prometheus = { version = "0.13.1", features = ["process"] }
-custom_error = "1.9.2"
-argon2 = "0.4.0"
-openidconnect = { version = "2.3", features = ["reqwest"] }
-jwt-authorizer = "0.8.0"
-
-# Migrator
-migration = { path = "./migration" }
+[workspace]
+members = [
+    "rozemyne",
+]
