@@ -14,6 +14,9 @@ license = "AGPL-3.0-or-later"
 sea-orm = { version = "0.9", features = ["sqlx-postgres", "runtime-tokio-rustls", "macros"] }
 tokio = { version = "1.19.0", features = ["macros", "rt", "rt-multi-thread"] }
 axum = "0.6.10"
+tower-http = { version = "0.4", features = ["trace"] }
+tracing = "0.1"
+tracing-subscriber = { version="0.3", features = ["env-filter"] }
 lazy_static = "1.4.0"
 clap = { version = "3.1.18", features = ["derive"] }
 toml = "0.5.9"
@@ -24,6 +27,7 @@ prometheus = { version = "0.13.1", features = ["process"] }
 custom_error = "1.9.2"
 argon2 = "0.4.0"
 openidconnect = { version = "2.3", features = ["reqwest"] }
+jwt-authorizer = "0.8.0"
 
 # Migrator
 migration = { path = "./migration" }
