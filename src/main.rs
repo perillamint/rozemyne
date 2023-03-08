@@ -17,10 +17,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use axum::{routing::get, Router};
+use axum::{extract::State, routing::get, Router};
 use clap::Parser;
 use migration::{Migrator, MigratorTrait};
-use sea_orm::{ConnectOptions, Database};
+use sea_orm::{ConnectOptions, Database, DatabaseConnection};
 use tower_http::{classify::ServerErrorsFailureClass, trace::TraceLayer};
 
 use jwt_authorizer::JwtAuthorizer;
@@ -32,6 +32,8 @@ mod util;
 //mod middleware;
 
 use config::read_config;
+use types::AppState;
+
 use serde::Deserialize;
 
 #[derive(clap::Parser)]
@@ -60,14 +62,19 @@ async fn main() -> std::io::Result<()> {
         .max_connections(cfg.database.max_connections)
         .min_connections(cfg.database.min_connections);
 
-    let conn = Database::connect(connopt).await.unwrap();
+    let conn = Database::connect(connopt)
+        .await
+        .expect("Failed to connect to database!");
 
     // Migrate the database
     Migrator::up(&conn, None).await.unwrap();
 
+    let state: AppState = AppState { dbconn: conn };
+
     let app = Router::new()
         .route("/", get(|| async { "Hello, World!" }))
         .nest("/api", api::get_route())
+        .with_state(state)
         .layer(TraceLayer::new_for_http());
 
     tracing::info!("Listening on localhost:3000...");

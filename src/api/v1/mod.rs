@@ -17,8 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use axum::{routing::get, Router};
+use axum::body::Body;
+use axum::extract::State;
+use axum::routing::get;
+use axum::Router;
 
-pub fn get_route() -> Router {
+use crate::types::AppState;
+
+pub(crate) fn get_route() -> Router<AppState, Body> {
     Router::new().route("/", get(|| async { "Hello, World!" }))
 }

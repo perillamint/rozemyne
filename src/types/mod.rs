@@ -17,4 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use sea_orm::DatabaseConnection;
+
 mod auth_token;
+
+#[derive(Clone)]
+pub(crate) struct AppState {
+    pub(crate) dbconn: DatabaseConnection,
+}

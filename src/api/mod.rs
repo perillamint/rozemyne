@@ -17,11 +17,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use axum::body::Body;
 use axum::Router;
+
+use crate::types::AppState;
 
 mod auth;
 mod v1;
 
-pub fn get_route() -> Router {
-    Router::new().nest("/v1", v1::get_route())
+pub(crate) fn get_route() -> Router<AppState, Body> {
+    Router::new()
+        .nest("/v1", v1::get_route())
+        .nest("/auth", auth::get_route())
 }
