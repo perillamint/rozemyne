@@ -301,6 +301,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "axum-jwt"
+version = "0.1.0"
+
+[[package]]
 name = "bae"
 version = "0.1.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
