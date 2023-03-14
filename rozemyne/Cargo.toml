@@ -30,4 +30,4 @@ openidconnect = { version = "2.3", features = ["reqwest"] }
 jwt-authorizer = { path = "../jwt-authorizer/jwt-authorizer" }
 
 # Migrator
-migration = { path = "./migration" }
+migration = { path = "../migration" }
