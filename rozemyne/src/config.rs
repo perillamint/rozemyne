@@ -45,7 +45,7 @@ pub(crate) struct Database {
 impl Default for Database {
     fn default() -> Self {
         Self {
-            url: "postgres://postgres:postgres@localhost:5432/musubi".to_string(),
+            url: "postgres://postgres:postgres@localhost:5432/rozemyne".to_string(),
             max_connections: 100,
             min_connections: 5,
         }
@@ -59,6 +59,11 @@ pub(crate) struct OIDCConfig {
     pub client_secret: String,
 }
 
+#[derive(Clone, Debug, Deserialize)]
+pub(crate) struct JWTConfig {
+    pub secret: String,
+}
+
 #[derive(Deserialize)]
 pub(crate) struct Config {
     #[serde(default)]
@@ -66,6 +71,7 @@ pub(crate) struct Config {
     #[serde(default)]
     pub database: Database,
     pub oidc: OIDCConfig,
+    pub jwt: JWTConfig,
 }
 
 pub(crate) fn parse_toml(tomlstr: &str) -> Config {

@@ -5,5 +5,5 @@
 [workspace]
 members = [
     "rozemyne",
-    "axum-jwt",
+    "jwt-authorizer/jwt-authorizer",
 ]

@@ -29,7 +29,7 @@ mod files;
 mod user;
 
 pub(crate) async fn get_route(config: &Config) -> Router<AppState, Body> {
-    let jwt_auth: JwtAuthorizer<JWTTokenClaim> = JwtAuthorizer::from_secret("topsecret");
+    let jwt_auth: JwtAuthorizer<JWTTokenClaim> = JwtAuthorizer::from_secret(&config.jwt.secret.clone());
     Router::new()
         .nest("/user", user::get_route(config).await)
         .nest("/files", files::get_route(config).await)
