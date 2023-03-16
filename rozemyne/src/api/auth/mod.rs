@@ -25,6 +25,8 @@ use axum::Router;
 use crate::config::Config;
 use crate::types::AppState;
 
+mod dummy;
+
 pub(crate) async fn get_route(config: &Config) -> Router<AppState, Body> {
-    Router::new().route("/", get(|| async { "Hello, World!" }))
+    Router::new().nest("/dummy", dummy::get_route(config).await)
 }

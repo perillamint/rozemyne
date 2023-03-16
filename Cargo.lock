@@ -2268,10 +2268,12 @@ dependencies = [
 name = "rozemyne"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "argon2",
  "axum",
  "clap",
  "custom_error",
+ "jsonwebtoken",
  "jwt-authorizer",
  "lazy_static",
  "log",
@@ -2281,6 +2283,7 @@ dependencies = [
  "regex",
  "sea-orm",
  "serde",
+ "thiserror",
  "tokio",
  "toml",
  "tower-http",

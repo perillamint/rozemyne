@@ -17,11 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use crate::config::Config;
 use sea_orm::DatabaseConnection;
+use std::sync::Arc;
 
 pub mod auth_token;
 
 #[derive(Clone)]
 pub(crate) struct AppState {
-    pub(crate) dbconn: DatabaseConnection,
+    pub dbconn: DatabaseConnection,
+    pub config: Arc<Config>,
 }

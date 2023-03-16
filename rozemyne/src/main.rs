@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use std::sync::Arc;
+
 use axum::routing::get;
 use axum::Router;
 use clap::Parser;
@@ -28,6 +30,7 @@ use jwt_authorizer::JwtAuthorizer;
 
 mod api;
 mod config;
+mod error;
 mod types;
 mod util;
 //mod middleware;
@@ -69,7 +72,10 @@ async fn main() -> std::io::Result<()> {
     // Migrate the database
     Migrator::up(&conn, None).await.unwrap();
 
-    let state: AppState = AppState { dbconn: conn };
+    let state: AppState = AppState {
+        dbconn: conn,
+        config: Arc::new(cfg.clone()),
+    };
 
     let app = Router::new()
         .route("/", get(|| async { "Hello, World!" }))

@@ -20,7 +20,7 @@ tracing-subscriber = { version="0.3", features = ["env-filter"] }
 lazy_static = "1.4.0"
 clap = { version = "3.1.18", features = ["derive"] }
 toml = "0.5.9"
-serde = "1.0.137"
+serde = { version = "1.0", features = ["derive"] }
 log = "0.4.17"
 regex = "1.5.6"
 prometheus = { version = "0.13.1", features = ["process"] }
@@ -28,6 +28,9 @@ custom_error = "1.9.2"
 argon2 = "0.4.0"
 openidconnect = { version = "2.3", features = ["reqwest"] }
 jwt-authorizer = { path = "../jwt-authorizer/jwt-authorizer" }
+jsonwebtoken = "8.2"
+anyhow = "1"
+thiserror = "1"
 
 # Migrator
 migration = { path = "../migration" }

@@ -20,7 +20,7 @@
 use serde::Deserialize;
 use std::fs;
 
-#[derive(Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub(crate) struct HTTPConfig {
     pub bind: String,
     pub port: u16,
@@ -35,7 +35,7 @@ impl Default for HTTPConfig {
     }
 }
 
-#[derive(Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub(crate) struct Database {
     pub url: String,
     pub max_connections: u32,
@@ -52,7 +52,7 @@ impl Default for Database {
     }
 }
 
-#[derive(Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub(crate) struct OIDCConfig {
     pub issuer: String,
     pub client_id: String,
@@ -64,7 +64,7 @@ pub(crate) struct JWTConfig {
     pub secret: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub(crate) struct Config {
     #[serde(default)]
     pub http: HTTPConfig,

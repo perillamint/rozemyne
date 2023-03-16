@@ -17,27 +17,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use axum::body::Body;
-use axum::Router;
-use jwt_authorizer::JwtAuthorizer;
+pub struct RozemyneError {
+    error: anyhow::Error,
+}
 
-use crate::config::Config;
-use crate::types::auth_token::JWTTokenClaim;
-use crate::types::AppState;
+impl From<anyhow::Error> for RozemyneError {
+    fn from(error: anyhow::Error) -> Self {
+        Self { error }
+    }
+}
 
-mod files;
-mod user;
-
-pub(crate) async fn get_route(config: &Config) -> Router<AppState, Body> {
-    let jwt_auth: JwtAuthorizer<JWTTokenClaim> =
-        JwtAuthorizer::from_secret(&config.jwt.secret.clone());
-    Router::new()
-        .nest("/user", user::get_route(config).await)
-        .nest("/files", files::get_route(config).await)
-        .layer(
-            jwt_auth
-                .layer()
-                .await
-                .expect("Failed to initialize JWT auth"),
-        )
+impl axum::response::IntoResponse for RozemyneError {
+    fn into_response(self) -> axum::response::Response {
+        let status_code = axum::http::StatusCode::INTERNAL_SERVER_ERROR;
+        (status_code, self.error.to_string()).into_response()
+    }
 }
