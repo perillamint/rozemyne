@@ -18,18 +18,25 @@
  */
 
 use axum::body::Body;
+use axum::routing::get;
 use axum::Router;
+use jwt_authorizer::JwtAuthorizer;
 
 use crate::config::Config;
+use crate::types::auth_token::{JWTClaim, RozemyneClaim};
 use crate::types::AppState;
 
-mod admin;
-mod files;
-mod user;
-
 pub(crate) async fn get_route(config: &Config) -> Router<AppState, Body> {
+    let jwt_auth: JwtAuthorizer<JWTClaim<RozemyneClaim>> =
+        JwtAuthorizer::from_secret(&config.jwt.secret.clone())
+            .check(|claims| claims.claims.is_admin);
+
     Router::new()
-        .nest("/admin", admin::get_route(config).await)
-        .nest("/files", files::get_route(config).await)
-        .nest("/user", user::get_route(config).await)
+        .route("/", get(|| async { "Hello, World!" }))
+        .layer(
+            jwt_auth
+                .layer()
+                .await
+                .expect("Failed to initialize JWT auth"),
+        )
 }

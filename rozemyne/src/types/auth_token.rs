@@ -17,9 +17,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Deserialize, Clone)]
-pub(crate) struct JWTTokenClaim {
-    //
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct JWTClaim<T> {
+    /// JWT ID claim provides a unique idntifier for the JWT.
+    pub jti: Option<String>,
+    /// Subject
+    pub sub: Option<String>,
+    // iss (issuer)
+    pub iss: String,
+    /// exp is the expiration time in unix time
+    pub exp: i64,
+    /// nbf (not before) claim identifies the time before
+    /// which JWT must not be accepted for processing.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub nbf: Option<i64>,
+    /// iat (issued at that time) means issued time of the JWT.
+    pub iat: i64,
+    pub claims: T,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct RozemyneClaim {
+    pub is_admin: bool,
+    pub permissions: Vec<String>,
 }

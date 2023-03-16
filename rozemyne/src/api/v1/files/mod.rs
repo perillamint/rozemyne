@@ -20,10 +20,22 @@
 use axum::body::Body;
 use axum::routing::get;
 use axum::Router;
+use jwt_authorizer::JwtAuthorizer;
 
 use crate::config::Config;
+use crate::types::auth_token::{JWTClaim, RozemyneClaim};
 use crate::types::AppState;
 
 pub(crate) async fn get_route(config: &Config) -> Router<AppState, Body> {
-    Router::new().route("/", get(|| async { "Hello, World!" }))
+    let jwt_auth: JwtAuthorizer<JWTClaim<RozemyneClaim>> =
+        JwtAuthorizer::from_secret(&config.jwt.secret.clone());
+
+    Router::new()
+        .route("/", get(|| async { "Hello, World!" }))
+        .layer(
+            jwt_auth
+                .layer()
+                .await
+                .expect("Failed to initialize JWT auth"),
+        )
 }

@@ -36,7 +36,6 @@ mod util;
 //mod middleware;
 
 use config::read_config;
-use types::auth_token::JWTTokenClaim;
 use types::AppState;
 
 #[derive(clap::Parser)]

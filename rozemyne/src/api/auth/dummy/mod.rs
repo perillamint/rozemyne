@@ -26,30 +26,13 @@ use serde::{Deserialize, Serialize};
 
 use crate::config::Config;
 use crate::error::RozemyneError;
+use crate::types::auth_token::{JWTClaim, RozemyneClaim};
 use crate::types::AppState;
 
 use jsonwebtoken::{
     decode, decode_header, encode, Algorithm, DecodingKey, EncodingKey, Header, TokenData,
     Validation,
 };
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct BaseClaim {
-    /// JWT ID claim provides a unique idntifier for the JWT.
-    pub jti: Option<String>,
-    /// Subject
-    pub sub: Option<String>,
-    // iss (issuer)
-    pub iss: String,
-    /// exp is the expiration time in unix time
-    pub exp: i64,
-    /// nbf (not before) claim identifies the time before
-    /// which JWT must not be accepted for processing.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub nbf: Option<i64>,
-    /// iat (issued at that time) means issued time of the JWT.
-    pub iat: i64,
-}
 
 // Return signed token, without any authorization.
 // Not for production run, of course.
@@ -60,13 +43,17 @@ async fn issue_token(State(state): State<AppState>) -> Result<String, RozemyneEr
         ..Default::default()
     };
 
-    let claim = BaseClaim {
+    let claim = JWTClaim::<RozemyneClaim> {
         jti: Some("test".to_owned()),
         sub: Some("testsub".to_owned()),
         iss: "Testissuer".to_owned(),
         exp: 9999999999999,
         nbf: None,
         iat: 1,
+        claims: RozemyneClaim {
+            is_admin: true,
+            permissions: vec!["admin".to_owned()],
+        },
     };
 
     let token = encode(
