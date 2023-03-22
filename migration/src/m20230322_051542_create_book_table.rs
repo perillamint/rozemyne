@@ -68,6 +68,28 @@ impl MigrationTrait for Migration {
             )
             .await?;
 
+        manager
+            .create_index(
+                Index::create()
+                    .name("idx_book_table_created_at")
+                    .table(Book::Table)
+                    .col(Book::CreatedAt)
+                    .index_type(IndexType::BTree)
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_index(
+                Index::create()
+                    .name("idx_book_table_updated_at")
+                    .table(Book::Table)
+                    .col(Book::UpdatedAt)
+                    .index_type(IndexType::BTree)
+                    .to_owned(),
+            )
+            .await?;
+
         Ok(())
     }
 
