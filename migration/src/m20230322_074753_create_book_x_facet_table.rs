@@ -11,23 +11,23 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
-                    .table(BookFacet::Table)
+                    .table(BookXFacet::Table)
                     .if_not_exists()
                     .col(
-                        ColumnDef::new(BookFacet::Id)
+                        ColumnDef::new(BookXFacet::Id)
                             .uuid()
                             .not_null()
                             .primary_key(),
                     )
-                    .col(ColumnDef::new(BookFacet::BookId).uuid().not_null())
-                    .col(ColumnDef::new(BookFacet::FacetId).uuid().not_null())
+                    .col(ColumnDef::new(BookXFacet::BookId).uuid().not_null())
+                    .col(ColumnDef::new(BookXFacet::FacetId).uuid().not_null())
                     .col(
-                        ColumnDef::new(BookFacet::CreatedAt)
+                        ColumnDef::new(BookXFacet::CreatedAt)
                             .timestamp_with_time_zone()
                             .not_null(),
                     )
                     .col(
-                        ColumnDef::new(BookFacet::UpdatedAt)
+                        ColumnDef::new(BookXFacet::UpdatedAt)
                             .timestamp_with_time_zone()
                             .not_null(),
                     )
@@ -39,7 +39,7 @@ impl MigrationTrait for Migration {
             .create_foreign_key(
                 ForeignKey::create()
                     .name("fk_book_facet_book_id")
-                    .from(BookFacet::Table, BookFacet::BookId)
+                    .from(BookXFacet::Table, BookXFacet::BookId)
                     .to(Book::Table, Book::Id)
                     .on_delete(ForeignKeyAction::Cascade)
                     .on_update(ForeignKeyAction::Cascade)
@@ -51,7 +51,7 @@ impl MigrationTrait for Migration {
             .create_foreign_key(
                 ForeignKey::create()
                     .name("fk_book_facet_facet_id")
-                    .from(BookFacet::Table, BookFacet::FacetId)
+                    .from(BookXFacet::Table, BookXFacet::FacetId)
                     .to(Facet::Table, Facet::Id)
                     .on_delete(ForeignKeyAction::Cascade)
                     .on_update(ForeignKeyAction::Cascade)
@@ -63,8 +63,8 @@ impl MigrationTrait for Migration {
             .create_index(
                 Index::create()
                     .name("idx_book_facet_book_id")
-                    .table(BookFacet::Table)
-                    .col(BookFacet::BookId)
+                    .table(BookXFacet::Table)
+                    .col(BookXFacet::BookId)
                     .index_type(IndexType::Hash)
                     .to_owned(),
             )
@@ -74,8 +74,8 @@ impl MigrationTrait for Migration {
             .create_index(
                 Index::create()
                     .name("idx_book_facet_facet_id")
-                    .table(BookFacet::Table)
-                    .col(BookFacet::FacetId)
+                    .table(BookXFacet::Table)
+                    .col(BookXFacet::FacetId)
                     .index_type(IndexType::Hash)
                     .to_owned(),
             )
@@ -85,8 +85,8 @@ impl MigrationTrait for Migration {
             .create_index(
                 Index::create()
                     .name("idx_book_facet_created_at")
-                    .table(BookFacet::Table)
-                    .col(BookFacet::CreatedAt)
+                    .table(BookXFacet::Table)
+                    .col(BookXFacet::CreatedAt)
                     .index_type(IndexType::BTree)
                     .to_owned(),
             )
@@ -96,8 +96,8 @@ impl MigrationTrait for Migration {
             .create_index(
                 Index::create()
                     .name("idx_book_facet_updated_at")
-                    .table(BookFacet::Table)
-                    .col(BookFacet::UpdatedAt)
+                    .table(BookXFacet::Table)
+                    .col(BookXFacet::UpdatedAt)
                     .index_type(IndexType::BTree)
                     .to_owned(),
             )
@@ -108,14 +108,14 @@ impl MigrationTrait for Migration {
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-            .drop_table(Table::drop().table(BookFacet::Table).to_owned())
+            .drop_table(Table::drop().table(BookXFacet::Table).to_owned())
             .await
     }
 }
 
 /// Learn more at https://docs.rs/sea-query#iden
 #[derive(Iden)]
-enum BookFacet {
+enum BookXFacet {
     Table,
     Id,
     BookId,
