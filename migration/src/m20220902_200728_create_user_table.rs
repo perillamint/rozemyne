@@ -145,7 +145,6 @@ impl MigrationTrait for Migration {
 pub(crate) enum User {
     Table,
     Id,
-    ExternalId,
     Email,
     Status,
     CreatedAt,
