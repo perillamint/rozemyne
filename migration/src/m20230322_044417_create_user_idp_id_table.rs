@@ -10,6 +10,8 @@ const FKEY_USER_IDP_TABLE_USER_ID: &str = "fkey_user_idp_table_user_id";
 const IDX_USER_IDP_TABLE_USER_ID: &str = "idx_user_idp_table_user_id";
 const IDX_USER_IDP_TABLE_IDP: &str = "idx_user_idp_table_idp";
 const IDX_USER_IDP_TABLE_IDP_ID: &str = "idx_user_idp_table_idp_id";
+const IDX_USER_IDP_TABLE_CREATED_AT: &str = "idx_user_idp_table_created_at";
+const IDX_USER_IDP_TABLE_UPDATED_AT: &str = "idx_user_idp_table_updated_at";
 
 #[async_trait::async_trait]
 impl MigrationTrait for Migration {
@@ -19,7 +21,12 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(UserIdpId::Table)
                     .if_not_exists()
-                    .col(ColumnDef::new(UserIdpId::Id).uuid().not_null().primary_key())
+                    .col(
+                        ColumnDef::new(UserIdpId::Id)
+                            .uuid()
+                            .not_null()
+                            .primary_key(),
+                    )
                     .col(
                         ColumnDef::new(UserIdpId::UserId)
                             .uuid()
@@ -36,6 +43,16 @@ impl MigrationTrait for Migration {
                         ColumnDef::new(UserIdpId::IdpId)
                             .string()
                             .unique_key()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(UserIdpId::CreatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(UserIdpId::UpdatedAt)
+                            .timestamp_with_time_zone()
                             .not_null(),
                     )
                     .to_owned(),
@@ -88,6 +105,28 @@ impl MigrationTrait for Migration {
             )
             .await?;
 
+        manager
+            .create_index(
+                Index::create()
+                    .name(IDX_USER_IDP_TABLE_CREATED_AT)
+                    .table(UserIdpId::Table)
+                    .col(UserIdpId::CreatedAt)
+                    .index_type(IndexType::BTree)
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_index(
+                Index::create()
+                    .name(IDX_USER_IDP_TABLE_UPDATED_AT)
+                    .table(UserIdpId::Table)
+                    .col(UserIdpId::UpdatedAt)
+                    .index_type(IndexType::BTree)
+                    .to_owned(),
+            )
+            .await?;
+
         Ok(())
     }
 
@@ -106,4 +145,6 @@ enum UserIdpId {
     UserId,
     Idp,
     IdpId,
+    CreatedAt,
+    UpdatedAt,
 }
