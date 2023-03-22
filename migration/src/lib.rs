@@ -21,6 +21,7 @@ pub use sea_orm_migration::prelude::*;
 
 mod m20220902_200728_create_user_table;
 mod m20230322_044417_create_user_idp_id_table;
+mod m20230322_051542_create_book_table;
 
 pub struct Migrator;
 
@@ -30,6 +31,7 @@ impl MigratorTrait for Migrator {
         vec![
             Box::new(m20220902_200728_create_user_table::Migration),
             Box::new(m20230322_044417_create_user_idp_id_table::Migration),
+            Box::new(m20230322_051542_create_book_table::Migration),
         ]
     }
 }
