@@ -28,36 +28,48 @@ impl MigrationTrait for Migration {
             )
             .await?;
 
-        manager.create_index(Index::create()
-            .name("idx_facet_table_parent_id")
-            .table(Facet::Table)
-            .col(Facet::ParentId)
-            .index_type(IndexType::Hash)
-            .to_owned())
+        manager
+            .create_index(
+                Index::create()
+                    .name("idx_facet_table_parent_id")
+                    .table(Facet::Table)
+                    .col(Facet::ParentId)
+                    .index_type(IndexType::Hash)
+                    .to_owned(),
+            )
             .await?;
 
-        manager.create_index(Index::create()
-            .name("idx_facet_table_title")
-            .table(Facet::Table)
-            .col(Facet::Title)
-            .index_type(IndexType::Hash)
-            .to_owned())
+        manager
+            .create_index(
+                Index::create()
+                    .name("idx_facet_table_title")
+                    .table(Facet::Table)
+                    .col(Facet::Title)
+                    .index_type(IndexType::Hash)
+                    .to_owned(),
+            )
             .await?;
 
-        manager.create_index(Index::create()
-            .name("idx_facet_table_created_at")
-            .table(Facet::Table)
-            .col(Facet::CreatedAt)
-            .index_type(IndexType::BTree)
-            .to_owned())
+        manager
+            .create_index(
+                Index::create()
+                    .name("idx_facet_table_created_at")
+                    .table(Facet::Table)
+                    .col(Facet::CreatedAt)
+                    .index_type(IndexType::BTree)
+                    .to_owned(),
+            )
             .await?;
 
-        manager.create_index(Index::create()
-            .name("idx_facet_table_updated_at")
-            .table(Facet::Table)
-            .col(Facet::UpdatedAt)
-            .index_type(IndexType::BTree)
-            .to_owned())
+        manager
+            .create_index(
+                Index::create()
+                    .name("idx_facet_table_updated_at")
+                    .table(Facet::Table)
+                    .col(Facet::UpdatedAt)
+                    .index_type(IndexType::BTree)
+                    .to_owned(),
+            )
             .await?;
 
         Ok(())
