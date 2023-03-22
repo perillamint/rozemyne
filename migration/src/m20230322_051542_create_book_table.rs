@@ -11,13 +11,7 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(Book::Table)
                     .if_not_exists()
-                    .col(
-                        ColumnDef::new(Book::Id)
-                            .integer()
-                            .not_null()
-                            .auto_increment()
-                            .primary_key(),
-                    )
+                    .col(ColumnDef::new(Book::Id).uuid().not_null().primary_key())
                     .col(ColumnDef::new(Book::Title).string().not_null())
                     .col(ColumnDef::new(Book::StorageBackend).string().not_null())
                     .col(ColumnDef::new(Book::FilePath).string().not_null())
