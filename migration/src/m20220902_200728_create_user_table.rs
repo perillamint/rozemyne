@@ -22,7 +22,6 @@ use sea_orm_migration::prelude::*;
 #[derive(DeriveMigrationName)]
 pub struct Migration;
 
-const IDX_USER_TABLE_EXTERNAL_ID: &str = "idx_user_table_external_id";
 const IDX_USER_TABLE_EMAIL: &str = "idx_user_table_email";
 const IDX_USER_TABLE_STATUS: &str = "idx_user_table_status";
 const IDX_USER_TABLE_CREATED_AT: &str = "idx_user_table_created_at";
@@ -37,12 +36,6 @@ impl MigrationTrait for Migration {
                     .table(User::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(User::Id).uuid().not_null().primary_key())
-                    .col(
-                        ColumnDef::new(User::ExternalId)
-                            .string()
-                            .unique_key()
-                            .not_null(),
-                    )
                     .col(ColumnDef::new(User::Email).string().not_null())
                     .col(ColumnDef::new(User::Status).string().not_null())
                     .col(
@@ -55,17 +48,6 @@ impl MigrationTrait for Migration {
                             .timestamp_with_time_zone()
                             .not_null(),
                     )
-                    .to_owned(),
-            )
-            .await?;
-
-        manager
-            .create_index(
-                Index::create()
-                    .name(IDX_USER_TABLE_EXTERNAL_ID)
-                    .table(User::Table)
-                    .col(User::ExternalId)
-                    .index_type(IndexType::Hash)
                     .to_owned(),
             )
             .await?;
@@ -121,15 +103,6 @@ impl MigrationTrait for Migration {
                 Index::drop()
                     .table(User::Table)
                     .name(IDX_USER_TABLE_EMAIL)
-                    .to_owned(),
-            )
-            .await?;
-
-        manager
-            .drop_index(
-                Index::drop()
-                    .table(User::Table)
-                    .name(IDX_USER_TABLE_EXTERNAL_ID)
                     .to_owned(),
             )
             .await?;
