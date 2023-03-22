@@ -774,12 +774,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "dotenv"
-version = "0.15.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "77c90badedccf4105eca100756a0b1289e191f6fcbdadd3cee1d2f614f97da8f"
-
-[[package]]
 name = "dotenvy"
 version = "0.15.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2292,7 +2286,7 @@ dependencies = [
  "openidconnect",
  "prometheus",
  "regex",
- "sea-orm",
+ "sea-orm 0.9.3",
  "serde",
  "thiserror",
  "tokio",
@@ -2425,8 +2419,8 @@ dependencies = [
  "once_cell",
  "ouroboros",
  "rust_decimal",
- "sea-orm-macros",
- "sea-query",
+ "sea-orm-macros 0.9.3",
+ "sea-query 0.26.4",
  "sea-strum",
  "serde",
  "serde_json",
@@ -2438,15 +2432,36 @@ dependencies = [
 ]
 
 [[package]]
-name = "sea-orm-cli"
-version = "0.9.3"
+name = "sea-orm"
+version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "de07b4a0fc83b1b7ef8a2fe5d42c2662b1c60315446e6ebb4151a301c35fe484"
+checksum = "587b878d32666ec796da72f84263f7103072426d3f84faae38af5f2844e34aa7"
 dependencies = [
- "async-std",
+ "async-stream",
+ "async-trait",
+ "futures",
+ "log",
+ "ouroboros",
+ "sea-orm-macros 0.11.1",
+ "sea-query 0.28.3",
+ "sea-query-binder",
+ "sea-strum",
+ "serde",
+ "sqlx",
+ "thiserror",
+ "tracing",
+ "url",
+]
+
+[[package]]
+name = "sea-orm-cli"
+version = "0.11.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3d5e11a072efc7527b8c0f35a976a7d23dda6ff01967e3132be2e65f4184883b"
+dependencies = [
  "chrono",
  "clap",
- "dotenv",
+ "dotenvy",
  "regex",
  "sea-schema",
  "tracing",
@@ -2468,15 +2483,29 @@ dependencies = [
 ]
 
 [[package]]
-name = "sea-orm-migration"
-version = "0.9.3"
+name = "sea-orm-macros"
+version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f80e3ebbc654c1915686898de119d33a449a9512567009df0a3e95b1afe4e36c"
+checksum = "6abb2f32ddb765e5a392975887ae3e0a7b90256a3fa7d3fbd7fe7ea4fb2237e5"
+dependencies = [
+ "bae",
+ "heck 0.3.3",
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "sea-orm-migration"
+version = "0.11.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e83b3786e42c62bf54196910648da81011bae8d87edb121083b92b0a5711d072"
 dependencies = [
  "async-trait",
  "clap",
- "dotenv",
- "sea-orm",
+ "dotenvy",
+ "futures",
+ "sea-orm 0.11.1",
  "sea-orm-cli",
  "sea-schema",
  "tracing",
@@ -2492,11 +2521,30 @@ dependencies = [
  "chrono",
  "postgres-types",
  "rust_decimal",
- "sea-query-derive",
+ "sea-query-derive 0.2.0",
  "sea-query-driver",
  "serde_json",
  "time",
  "uuid",
+]
+
+[[package]]
+name = "sea-query"
+version = "0.28.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d2fbe015dbdaa7d8829d71c1e14fb6289e928ac256b93dfda543c85cd89d6f03"
+dependencies = [
+ "sea-query-derive 0.3.0",
+]
+
+[[package]]
+name = "sea-query-binder"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "03548c63aec07afd4fd190923e0160d2f2fc92def27470b54154cf232da6203b"
+dependencies = [
+ "sea-query 0.28.3",
+ "sqlx",
 ]
 
 [[package]]
@@ -2506,6 +2554,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "34cdc022b4f606353fe5dc85b09713a04e433323b70163e81513b141c6ae6eb5"
 dependencies = [
  "heck 0.3.3",
+ "proc-macro2",
+ "quote",
+ "syn",
+ "thiserror",
+]
+
+[[package]]
+name = "sea-query-derive"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "63f62030c60f3a691f5fe251713b4e220b306e50a71e1d6f9cce1f24bb781978"
+dependencies = [
+ "heck 0.4.1",
  "proc-macro2",
  "quote",
  "syn",
@@ -2525,12 +2586,12 @@ dependencies = [
 
 [[package]]
 name = "sea-schema"
-version = "0.9.4"
+version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f737a6819fcad9727207d7090ccd6a33c0b384f3794e8838f952b52d599e3a17"
+checksum = "eeb2940bb5a10bc6cd05b450ce6cd3993e27fddd7eface2becb97fc5af3a040e"
 dependencies = [
  "futures",
- "sea-query",
+ "sea-query 0.28.3",
  "sea-schema-derive",
 ]
 
