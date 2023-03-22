@@ -24,6 +24,7 @@ mod m20230322_044417_create_user_idp_id_table;
 mod m20230322_051542_create_book_table;
 mod m20230322_061805_create_facet_table;
 mod m20230322_070150_create_book_file_table;
+mod m20230322_074753_create_book_facet_table;
 
 pub struct Migrator;
 
@@ -36,6 +37,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20230322_051542_create_book_table::Migration),
             Box::new(m20230322_061805_create_facet_table::Migration),
             Box::new(m20230322_070150_create_book_file_table::Migration),
+            Box::new(m20230322_074753_create_book_facet_table::Migration),
         ]
     }
 }
