@@ -30,13 +30,16 @@ impl MigrationTrait for Migration {
             )
             .await?;
 
-        manager.create_foreign_key(ForeignKey::create()
-            .name("fk_book_file_table_book_id")
-            .from(BookFile::Table, BookFile::BookId)
-            .to(Book::Table, Book::Id)
-            .on_delete(ForeignKeyAction::Cascade)
-            .on_update(ForeignKeyAction::Cascade)
-            .to_owned())
+        manager
+            .create_foreign_key(
+                ForeignKey::create()
+                    .name("fk_book_file_table_book_id")
+                    .from(BookFile::Table, BookFile::BookId)
+                    .to(Book::Table, Book::Id)
+                    .on_delete(ForeignKeyAction::Cascade)
+                    .on_update(ForeignKeyAction::Cascade)
+                    .to_owned(),
+            )
             .await?;
 
         manager
