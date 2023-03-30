@@ -18,8 +18,11 @@
  */
 
 use crate::config::Config;
+use openidconnect::core::CoreClient;
 use sea_orm::DatabaseConnection;
 use std::sync::Arc;
+
+use crate::util::oidc::OIDCAuthProvider;
 
 pub mod auth_token;
 
@@ -27,4 +30,5 @@ pub mod auth_token;
 pub(crate) struct AppState {
     pub dbconn: DatabaseConnection,
     pub config: Arc<Config>,
+    pub oidc: Arc<OIDCAuthProvider<String>>,
 }

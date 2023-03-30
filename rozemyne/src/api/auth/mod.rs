@@ -26,6 +26,7 @@ use crate::config::Config;
 use crate::types::AppState;
 
 mod dummy;
+mod oidc;
 
 pub(crate) async fn get_route(config: &Config) -> Router<AppState, Body> {
     Router::new().nest("/dummy", dummy::get_route(config).await)

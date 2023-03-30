@@ -26,7 +26,7 @@ regex = "1.5.6"
 prometheus = { version = "0.13.1", features = ["process"] }
 custom_error = "1.9.2"
 argon2 = "0.4.0"
-openidconnect = { version = "2.3", features = ["reqwest"] }
+openidconnect = { version = "2.5", features = ["reqwest", "rustls-tls"] }
 jwt-authorizer = { path = "../jwt-authorizer/jwt-authorizer", features = ["rustls-tls"] }
 jsonwebtoken = "8.2"
 anyhow = "1"

@@ -19,7 +19,7 @@
 
 use axum::body::Body;
 use axum::routing::get;
-use axum::{Router, Json};
+use axum::{Json, Router};
 use jwt_authorizer::{JwtAuthorizer, JwtClaims};
 
 use crate::config::Config;
@@ -27,7 +27,9 @@ use crate::error::RozemyneError;
 use crate::types::auth_token::{JWTClaim, RozemyneClaim};
 use crate::types::AppState;
 
-async fn check_permission(JwtClaims(claims): JwtClaims<JWTClaim<RozemyneClaim>>) -> Result<Json<RozemyneClaim>, RozemyneError> {
+async fn check_permission(
+    JwtClaims(claims): JwtClaims<JWTClaim<RozemyneClaim>>,
+) -> Result<Json<RozemyneClaim>, RozemyneError> {
     tracing::debug!("claims: {:?}", claims);
     Ok(Json(claims.claims))
 }

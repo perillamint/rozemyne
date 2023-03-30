@@ -13,12 +13,7 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(BookMeta::Table)
                     .if_not_exists()
-                    .col(
-                        ColumnDef::new(BookMeta::Id)
-                            .uuid()
-                            .not_null()
-                            .primary_key(),
-                    )
+                    .col(ColumnDef::new(BookMeta::Id).uuid().not_null().primary_key())
                     .col(ColumnDef::new(BookMeta::BookId).uuid().not_null())
                     .col(ColumnDef::new(BookMeta::Key).string().not_null())
                     .col(ColumnDef::new(BookMeta::Value).string().not_null())

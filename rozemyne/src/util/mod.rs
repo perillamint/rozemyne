@@ -17,4 +17,5 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-mod jwt;
+pub mod jwt;
+pub mod oidc;

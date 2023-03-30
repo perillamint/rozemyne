@@ -35,8 +35,10 @@ mod types;
 mod util;
 //mod middleware;
 
-use config::read_config;
+use config::{read_config, Config};
 use types::AppState;
+
+use crate::util::oidc::OIDCAuthProvider;
 
 #[derive(clap::Parser)]
 #[clap(about, version, author)]
@@ -53,7 +55,7 @@ lazy_static! {
 }
 
 #[tokio::main(flavor = "multi_thread")]
-async fn main() -> std::io::Result<()> {
+async fn main() -> Result<(), anyhow::Error> {
     let cfg = read_config(&ARGS.config);
     tracing_subscriber::fmt::init();
 
@@ -69,11 +71,12 @@ async fn main() -> std::io::Result<()> {
         .expect("Failed to connect to database!");
 
     // Migrate the database
-    Migrator::up(&conn, None).await.unwrap();
+    //Migrator::up(&conn, None).await.unwrap();
 
     let state: AppState = AppState {
         dbconn: conn,
         config: Arc::new(cfg.clone()),
+        oidc: Arc::new(OIDCAuthProvider::new(&cfg.oidc, "").await?),
     };
 
     let app = Router::new()

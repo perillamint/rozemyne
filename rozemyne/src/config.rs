@@ -21,7 +21,7 @@ use serde::Deserialize;
 use std::fs;
 
 #[derive(Clone, Debug, Deserialize)]
-pub(crate) struct HTTPConfig {
+pub struct HTTPConfig {
     pub bind: String,
     pub port: u16,
 }
@@ -36,7 +36,7 @@ impl Default for HTTPConfig {
 }
 
 #[derive(Clone, Debug, Deserialize)]
-pub(crate) struct Database {
+pub struct Database {
     pub url: String,
     pub max_connections: u32,
     pub min_connections: u32,
@@ -53,19 +53,20 @@ impl Default for Database {
 }
 
 #[derive(Clone, Debug, Deserialize)]
-pub(crate) struct OIDCConfig {
+pub struct OIDCConfig {
     pub issuer: String,
     pub client_id: String,
     pub client_secret: String,
+    pub claims: Vec<String>,
 }
 
 #[derive(Clone, Debug, Deserialize)]
-pub(crate) struct JWTConfig {
+pub struct JWTConfig {
     pub secret: String,
 }
 
 #[derive(Clone, Debug, Deserialize)]
-pub(crate) struct Config {
+pub struct Config {
     #[serde(default)]
     pub http: HTTPConfig,
     #[serde(default)]
@@ -74,12 +75,12 @@ pub(crate) struct Config {
     pub jwt: JWTConfig,
 }
 
-pub(crate) fn parse_toml(tomlstr: &str) -> Config {
+pub fn parse_toml(tomlstr: &str) -> Config {
     let cfg: Config = toml::from_str(tomlstr).expect("Invalid config file");
     cfg
 }
 
-pub(crate) fn read_config(cfgpath: &str) -> Config {
+pub fn read_config(cfgpath: &str) -> Config {
     match fs::read_to_string(cfgpath) {
         Ok(x) => parse_toml(&x),
         Err(_) => panic!("Config file not found!"),
